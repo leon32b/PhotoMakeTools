@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bar_grey">#ff393a3e</color>
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="colorAccent">#fff9464f</color>
+    <color name="translucent">#80000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="main_back_black">#ff111111</color>
+    <color name="main_button_black">#ff232531</color>
+    <color name="main_button_red">#ffd64459</color>
+    <color name="main_banner_black">#ff191919</color>
+    <color name="windowBackground">#ff352e3c</color>
+</resources>

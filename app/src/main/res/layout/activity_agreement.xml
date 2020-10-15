@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/main_banner_black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_normal"
+        android:background="@color/windowBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@mipmap/ic_back"
+        app:title="@string/text_agreement"
+        app:titleTextColor="@color/white"/>
+    <WebView
+        android:id="@+id/wv_agreement"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

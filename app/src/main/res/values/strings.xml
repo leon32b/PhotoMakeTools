@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">出镜</string>
+    <string name="text_cancel">取消</string>
+    <string name="text_ok">确定</string>
+    <string name="text_export">导出</string>
+    <string name="text_setting">设置</string>
+    <string name="text_feedback">建议与反馈</string>
+    <string name="text_clean">清除缓存</string>
+    <string name="text_update">检查新版本</string>
+    <string name="text_clean_success">清除成功</string>
+    <string name="text_evaluate">评价</string>
+    <string name="text_about">关于</string>
+    <string name="text_disagree">不同意</string>
+    <string name="text_agree">同意并继续</string>
+    <string name="text_agreement">用户协议</string>
+    <string name="text_privacy">隐私政策</string>
+    <string name="text_extract_photo">提取照片</string>
+    <string name="tip_extract">提取中...</string>
+    <string name="tip_load">加载中...</string>
+    <string name="tip_search">搜索中...</string>
+    <string name="tip_crop">裁剪中...</string>
+    <string name="tip_generate">生成中...</string>
+    <string name="tip_compress">压缩中...</string>
+    <string name="tip_save">保存中...</string>
+    <string name="tip_order">切换中...</string>
+    <string name="title_warning">警告！</string>
+    <string name="tip_permissions_set">请前往设置->应用->权限管理->权限中打开相关权限，否则功能无法正常运行！</string>
+    <string name="title_exit_app">再按一次退出程序</string>
+    <string name="text_agreement_privacy">用户协议与隐私政策</string>
+    <string name="tip_openmarket_error">打开应用商店失败</string>
+    <string name="tip_qqgroup_error">未安装手Q或安装的版本不支持</string>
+    <string name="tip_agreement_privacy">感谢您选择出镜APP！我们非常重视您的个人信息和隐私保护。为了更好地保障您的个人权益，在您使用我们的产品前，请务必审慎阅读《用户协议》和《隐私政策》内的所有条款，尤其是我们对您的个人信息的收集、保存、使用、对外提供、保护等规则条款，以及您的用户权利等条款；约定我们的限制责任、免责条款；其他以颜色或加粗进行标识的重要条款。如您对以上协议有任何疑问，可通过新浪微博@出镜与我们联系。您点击\“同意并继续”的行为即表示您已阅读完毕并同意以上协议的全部内容。如您同意以上协议内容，请点击\“同意并继续”，开始使用我们的产品和服务！</string>
+</resources>
