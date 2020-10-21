@@ -11,12 +11,9 @@ import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
-import com.umeng.analytics.MobclickAgent;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,46 +51,48 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         mContext = SplashActivity.this;
         if (Tools.isSDKVersionM(mContext)) {
-            isStorageGranted = Tools.checkPermissionAllGranted(mContext, UtilData.STORAGE_PERMISSION_STRING);
+            isStorageGranted = Tools.checkPermissionAllGranted(mContext, UtilData.PERMISSION_STRING);
         } else {
             isStorageGranted = true;
         }
         Log.d(TAG, "isStorageGranted="+isStorageGranted);
-        new Thread(() -> {
-            if (isStorageGranted) {
-                startUpdateService();
-            }
-        }).start();
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final Request request = new Request.Builder()
-                .url(ADSWITCH_URL)
-                .build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                String jsondata = Objects.requireNonNull(response.body()).string();
-                if (!jsondata.isEmpty()) {
-                    Log.d(TAG, "jsondata=" + jsondata);
-                    try {
-                        JSONObject jsonObject = new JSONObject(jsondata);
-                        if (jsonObject.getInt("code") == 200) {
-                            boolean adswitch = jsonObject.getBoolean("switch");
-                            Log.d(TAG, "adswitch=" + adswitch);
-                            Tools.saveCustomData(mContext, UtilData.TTAD_SWITCH_KEY, adswitch);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Log.d(TAG, "jsondata=empty");
+        if (isStorageGranted) {
+            startUpdateService();
+        }
+        boolean adswitch = Tools.getCustomData(mContext, UtilData.TTAD_SWITCH_KEY, false);
+        Log.d(TAG, "adswitch="+adswitch);
+        if (!adswitch) {
+            OkHttpClient okHttpClient = new OkHttpClient();
+            final Request request = new Request.Builder()
+                    .url(ADSWITCH_URL)
+                    .build();
+            Call call = okHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    String jsondata = Objects.requireNonNull(response.body()).string();
+                    if (!jsondata.isEmpty()) {
+                        Log.d(TAG, "jsondata=" + jsondata);
+                        try {
+                            JSONObject jsonObject = new JSONObject(jsondata);
+                            if (jsonObject.getInt("code") == 200) {
+                                boolean adswitch = jsonObject.getBoolean("switch");
+                                Log.d(TAG, "adswitch=" + adswitch);
+                                Tools.saveCustomData(mContext, UtilData.TTAD_SWITCH_KEY, adswitch);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.d(TAG, "jsondata=empty");
+                    }
+                }
+            });
+        }
         if (ADData.AD_SWITCH) {
             mSplashContainer = findViewById(R.id.splash_container);
             mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
@@ -105,7 +104,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
         if (ADData.AD_SWITCH) {
             if (mForceGoMain) {
                 goToMainActivity();
@@ -117,7 +115,6 @@ public class SplashActivity extends AppCompatActivity {
 
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -238,7 +235,7 @@ public class SplashActivity extends AppCompatActivity {
     private void startUpdateService() {
         Log.d(TAG,"startUpdateService...");
         Intent intent = new Intent(SplashActivity.this, MediaStoreUpdateService.class);
-        intent.putExtra("mediastore_action", UtilData.ACTION_GETALL);
+        intent.putExtra("mediastore_action", UtilData.ACTION_GETVIDEO);
         startService(intent);
     }
 }

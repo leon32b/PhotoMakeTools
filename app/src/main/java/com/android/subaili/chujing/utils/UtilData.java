@@ -54,14 +54,7 @@ public class UtilData {
     public static final String ACTION_ALL_PHOTO_UPDATE = "android.intent.subaili.action.ALL_PHOTO_UPDATE";
     public static final String ACTION_ALL_GIF_UPDATE = "android.intent.subaili.action.ALL_GIF_UPDATE";
     public static final String ACTION_ALL_VIDEO_UPDATE = "android.intent.subaili.action.ALL_VIDEO_UPDATE";
-    public static final String[] ALL_PERMISSION_STRING = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
-    public static final String[] STORAGE_PERMISSION_STRING = {
+    public static final String[] PERMISSION_STRING = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
     };

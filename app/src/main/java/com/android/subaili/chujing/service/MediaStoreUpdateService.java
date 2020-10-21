@@ -76,20 +76,6 @@ public class MediaStoreUpdateService extends Service {
         }
     }
 
-
-    private class GetMediaStoreThread extends Thread {
-        private Context context;
-
-        public GetMediaStoreThread(Context context) {
-            this.context = context;
-        }
-
-        public void run() {
-            UtilData.mAllVideoList.clear();
-            UtilData.mAllVideoList = getAllVideo(context);
-        }
-    }
-
     private synchronized ArrayList<AllVideoModel> getAllVideo(Context context) {
         Log.d(TAG, "getAllVideo...");
         UtilData.UPDATE_VIDEO_FLAG = false;

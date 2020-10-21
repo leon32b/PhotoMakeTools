@@ -1,6 +1,5 @@
 package com.android.subaili.chujing.activity;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,6 +17,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private AllVideoAdapter mAllVideoAdapter;
     private static final int MSG_GET_ALLVIDEO = 0x100;
+    private final static String TAG = "MainActivity";
     private static final String SP_IS_FIRST_ENTER_APP = "SP_IS_FIRST_ENTER_APP";
     private final CustomHandler mHandler = new CustomHandler(this);
 
@@ -219,41 +220,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkPermission() {
-        int targetSdkVersion = 0;
-        String[] PermissionString = {
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_NETWORK_STATE
-        };
-        try {
-            final PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
-            targetSdkVersion = info.applicationInfo.targetSdkVersion;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (targetSdkVersion >= Build.VERSION_CODES.M) {
-                boolean isAllGranted = checkPermissionAllGranted(PermissionString);
-                if (isAllGranted) {
-                    return;
-                }
-                ActivityCompat.requestPermissions(this, PermissionString, 1);
+        Log.d(TAG, "checkPermission...");
+        if (Tools.isSDKVersionM(mContext)) {
+            boolean isAllGranted = Tools.checkPermissionAllGranted(mContext, UtilData.PERMISSION_STRING);
+            Log.d(TAG, "checkPermission,isAllGranted="+isAllGranted);
+            if (!isAllGranted) {
+                ActivityCompat.requestPermissions(this, UtilData.PERMISSION_STRING, 1);
+            } else {
+                startUpdateService();
             }
         }
-    }
-
-    private boolean checkPermissionAllGranted(String[] permissions) {
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -276,9 +252,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startUpdateService() {
-        Intent intent = new Intent(MainActivity.this, MediaStoreUpdateService.class);
-        intent.putExtra("mediastore_action", UtilData.ACTION_GETALL);
-        startService(intent);
+        if (!Tools.isRunService(mContext, MediaStoreUpdateService.class.getName())) {
+            Log.d(TAG, "startUpdateService...");
+            Intent intent = new Intent(MainActivity.this, MediaStoreUpdateService.class);
+            intent.putExtra("mediastore_action", UtilData.ACTION_GETALL);
+            startService(intent);
+        }
     }
 
     private void showWaringDialog() {
