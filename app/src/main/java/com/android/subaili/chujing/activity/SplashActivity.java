@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
     private TTAdNative mTTAdNative;
     private FrameLayout mSplashContainer;
     private final static String TAG = "SplashActivity";
-    private final static String ADSWITCH_URL = "http://121.41.47.196:8080/subaili/ADSwitch";
+    private final static String ADSWITCH_URL = "http://47.98.38.184/ADSwitch";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +62,18 @@ public class SplashActivity extends AppCompatActivity {
         boolean adswitch = Tools.getCustomData(mContext, UtilData.TTAD_SWITCH_KEY, false);
         Log.d(TAG, "adswitch="+adswitch);
         if (!adswitch) {
+            long versionCode = Tools.getAppVersionCode(mContext);
+            String versionName = Tools.getAppVersionName(mContext);
+            String strUrl = ADSWITCH_URL +  "?versionCode=" + versionCode + "&versionName=" + versionName;
             OkHttpClient okHttpClient = new OkHttpClient();
             final Request request = new Request.Builder()
-                    .url(ADSWITCH_URL)
+                    .url(strUrl)
                     .build();
             Call call = okHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    e.printStackTrace();
                 }
 
                 @Override
@@ -98,7 +102,6 @@ public class SplashActivity extends AppCompatActivity {
             mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
             loadSplashAd();
         }
-
     }
 
     @Override

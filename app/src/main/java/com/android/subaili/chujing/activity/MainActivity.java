@@ -45,7 +45,8 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends AppCompatActivity {
     private Context mContext;
     private long exitTime = 0;
-    private AlertDialog dialog;
+    private AlertDialog mPermissionDialog;
+    private AlertDialog mStatementDialog;
     private AllVideoAdapter mAllVideoAdapter;
     private static final int MSG_GET_ALLVIDEO = 0x100;
     private final static String TAG = "MainActivity";
@@ -82,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startDialog() {
-        dialog = new AlertDialog.Builder(mContext).create();
-        dialog.show();
-        dialog.setCancelable(false);
-        final Window window = dialog.getWindow();
+        mStatementDialog = new AlertDialog.Builder(mContext).create();
+        mStatementDialog.show();
+        mStatementDialog.setCancelable(false);
+        final Window window = mStatementDialog.getWindow();
         if (window != null) {
             window.setContentView(R.layout.dialog_initmate);
             window.setGravity(Gravity.CENTER);
@@ -142,13 +143,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void startFinish() {
         Tools.saveCustomData(mContext, SP_IS_FIRST_ENTER_APP, true);
-        dialog.cancel();
+        mStatementDialog.cancel();
         finish();
     }
 
     private void enterApp() {
         saveFirstEnterApp();
-        dialog.cancel();
+        mStatementDialog.cancel();
         checkPermission();
     }
 
@@ -261,10 +262,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showWaringDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_warning))
-                .setMessage(getString(R.string.tip_permissions_set))
-                .setNegativeButton(getString(R.string.text_cancel), (dialog, which) -> finish())
-                .setPositiveButton(getString(R.string.text_ok), (dialog, which) -> checkPermission()).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_warning));
+        builder.setMessage(getString(R.string.tip_permissions_set));
+        builder.setNegativeButton(getString(R.string.text_cancel), (dialog, which) -> mPermissionDialog.dismiss());
+        builder.setPositiveButton(getString(R.string.text_ok), (dialog, which) -> checkPermission());
+        mPermissionDialog = builder.show();
     }
 }
